@@ -1,6 +1,8 @@
+#Ian Finch
+#Started 11/6/2018
+
 #!/usr/bin/python
 import sys
-import re
 
 #opens the specified file
 args = sys.argv
@@ -40,13 +42,11 @@ if debug:
 #add a node for each new line in the file
 #must add a head for each character in alphabet
 
-i = 1
 nodeList = []
 for i in range(numStates):
     foo = sim.readline().rstrip('\n')
     foo = foo.split(' ')
     thisNode = []
-    j = 1
     for j in range(len(alphabet)):
         thisNode.append(int(foo[j]))
     nodeList.append(thisNode)
@@ -56,36 +56,32 @@ if debug:
 sim.close
 
 strings = args[2]
-strings = open(strings, "r")
-i = 1
-while True:
-    currString = strings.readline().rstrip('\n')
-    if currString == '':
-        break
-    currState = nodeList[0]
-    if debug:         
-        print('current string is '+ currString)
-    for k in currString:
-        if debug:
-            print("char "+ k)
-        
-        for i in range(len(alphabet)):
-            if alphabet[i]==k:
-                currStateNum = currState[i]
-                if debug:
-                    print("Go to state "+ str(currStateNum))
-                currState = nodeList[currStateNum]
-            #else:
-                #print("char doesn't exist"
-    if any(currStateNum in accStates for i in accStates):
-        if debug:
-            print("string " + currString + " accepts")
+with open(strings, "r") as stringsLib:
+    for currString in stringsLib:
+        currString = currString.rstrip('\n')
+        currState = nodeList[0]
+        if debug:         
+            print('current string is '+ currString)
+        for k in currString:
+            if debug:
+                print("char "+ k)
+            
+            for i in range(len(alphabet)):
+                if alphabet[i]==k:
+                    currStateNum = currState[i]
+                    if debug:
+                        print("Go to state "+ str(currStateNum))
+                    currState = nodeList[currStateNum]
+
+        if any(currStateNum in accStates for i in accStates):
+            if debug:
+                print("string " + currString + " accepts")
+            else:
+                print("accept")
         else:
-            print("accept")
-    else:
-        if debug:
-            print("string " + currString + " rejects")
-        else:
-            print("rejects")
+            if debug:
+                print("string " + currString + " rejects")
+            else:
+                print("reject")
 
         
